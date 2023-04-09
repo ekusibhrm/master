@@ -10,9 +10,9 @@ import time # タイムラグをつける
 import pyaudio
 import speech_recognition as sr
 from io import BytesIO
-print("てすと")
+
 # OpenAI API認証の設定
-openai.api_key = "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"
+openai.api_key = "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"
 
 def generate_wav(text, speaker=1, filepath='./audio.wav'):
     host = 'localhost'
@@ -59,7 +59,6 @@ with sr.Microphone(sample_rate=16_000) as source:
 audio_data = BytesIO(audio.get_wav_data())
 audio_data.name = "from_mic.wav"
 transcript = openai.Audio.transcribe("whisper-1", audio_data)
-# print(transcript["text"])
 
 print("リクエスト")
 print(transcript["text"])
@@ -67,9 +66,11 @@ print(transcript["text"])
 response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
     messages=[
-        # {"role": "user", "content": "あなたはとても友好的な英会話の講師です"}, 
-        {"role": "user", "content": transcript["text"]}, #※1後述
+        {"role": "user", "content": "あなたはとても友好的な英会話の講師です"}, 
+        {"role": "user", "content": "140文字以内で回答してください"}, 
+        {"role": "user", "content": transcript["text"]},
     ]
+
 )
 result_text = response["choices"][0]["message"]["content"]
 result_text = result_text.replace("。", "。\n")
