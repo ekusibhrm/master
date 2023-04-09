@@ -7,7 +7,7 @@ import time # タイムラグをつける
 import pyaudio
 import speech_recognition as sr
 from io import BytesIO
-
+print("てすと")
 # OpenAI API認証の設定
 openai.api_key = "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"
 
